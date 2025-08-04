@@ -99,9 +99,7 @@ class UserAppGUI:
         self.user.status = "online"
 
         self.build_main_screen()
-        #self.check_mom_messages()
-
-        
+        #self.check_mom_messages() 
 
     def update_location(self):
         lat = float(simpledialog.askstring("Latitude", "Nova latitude:"))
@@ -109,7 +107,6 @@ class UserAppGUI:
         self.registry.update_location(self.user.id, lat, lon)
         self.append_output("Localização atualizada.")
         
-
     def update_status(self):
         status = simpledialog.askstring("Status", "Novo status (online/offline):").strip().lower()
         self.user.status = status
@@ -153,7 +150,14 @@ class UserAppGUI:
             return
 
         _, status = dest_info
-        if status == "online":
+
+        try:
+            within_radius = self.registry.is_within_radius(self.user.id, dest_name)
+        except Exception as e:
+            print("Erro ao verificar distância:", e)
+            within_radius = False
+
+        if status == "online" and within_radius:
             try:
                 dest_port = int(simpledialog.askstring("Porta", "Porta RPC do destinatário:"))
                 client = RPCClient(target_port=dest_port)
@@ -166,7 +170,13 @@ class UserAppGUI:
             self.append_output("Mensagem enviada via fila.")
 
     def show_offline_msgs(self):
-        if self.user.status == "online":
+        try:
+            contacts = self.registry.get_online_contacts_within_radius(self.user.id)
+        except Exception as e:
+            print("Erro ao verificar distância:", e)
+            contacts = False
+
+        if self.user.status == "online" and contacts:
             msgs = self.mom.read_buffer()
             if not msgs:
                 self.append_output("Nenhuma mensagem offline.")
