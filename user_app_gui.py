@@ -113,18 +113,6 @@ class UserAppGUI:
         self.registry.update_status(self.user.id, status)
         self.append_output("Status atualizado.")
         
-
-        # if status == "online":
-        #     if self.mom is None:
-        #         self.mom = MOMManager(self.user, self.user.name)
-        #     else:
-        #         try:
-        #             self.mom.conn.connect(wait=True)
-        #             self.mom.conn.subscribe(destination=self.mom.queue_name, id=1, ack='auto')
-        #             self.append_output("Reconectado à fila MOM.")
-        #         except Exception as e:
-        #             self.append_output(f"[ERRO] Reconexão MOM falhou: {e}")
-
     def update_radius(self):
         r = float(simpledialog.askstring("Raio", "Novo raio (km):"))
         self.user.radius_km = r
