@@ -24,3 +24,8 @@ class RegistryClient:
     
     def remove_user(self, user_id):
         return self.proxy.remove_user(user_id)
+    
+    def is_within_radius(self, sender_id, receiver_name):
+        return self.proxy.is_within_radius(sender_id, receiver_name)
+
+

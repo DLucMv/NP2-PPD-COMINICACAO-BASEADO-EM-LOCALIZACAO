@@ -37,6 +37,9 @@ def get_user_port_by_name(name):
             return u.name, u.status  
     return None
 
+def is_within_radius(sender_id, receiver_name):
+    return registry.is_within_radius(sender_id, receiver_name)
+
 def remove_user(user_id):
     return registry.remove_user(user_id)
 
@@ -46,6 +49,7 @@ server.register_function(register_user, "register_user")
 server.register_function(update_location, "update_location")
 server.register_function(update_status, "update_status")
 server.register_function(update_radius, "update_radius")
+server.register_function(is_within_radius, "is_within_radius")
 server.register_function(get_online_contacts_within_radius, "get_online_contacts_within_radius")
 server.register_function(get_user_port_by_name, "get_user_port_by_name")
 server.register_function(remove_user, "remove_user")

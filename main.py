@@ -69,16 +69,25 @@ def start_user_interface():
                 _, status = dest_info
                 msg = input("Mensagem: ")
 
-                if status == "online":
+                # Verifica se o destinatário está dentro do raio
+                try:
+                    within_radius = registry.is_within_radius(user.id, dest_name)
+                except Exception as e:
+                    print("Erro ao verificar distância:", e)
+                    within_radius = False
+
+                if status == "online" and within_radius:
                     try:
                         dest_port = int(input("Porta RPC do destinatário: "))
                         client = RPCClient(target_port=dest_port)
                         client.send_message(user.name, msg)
+                        print("Mensagem enviada via RPC.")
                     except Exception as e:
                         print("Erro no envio RPC:", e)
                 else:
                     mom.send_message(dest_name, msg)
-                    print("Mensagem enviada via fila (usuário offline).")
+                    print("Mensagem enviada via fila (usuário offline ou fora de cobertura).")
+
             elif op == "6":
                 msgs = mom.read_buffer()
                 if not msgs:

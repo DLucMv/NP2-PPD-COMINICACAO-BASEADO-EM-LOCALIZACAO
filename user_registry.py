@@ -49,3 +49,10 @@ class UserRegistry:
         for other_id, other_user in self.users.items():
             if other_id != user_id and user.is_within_radius(other_user):
                 user.add_contact(other_user)
+
+    def is_within_radius(self, sender_id, receiver_name):
+        sender = self.users.get(sender_id)
+        receiver = next((u for u in self.users.values() if u.name == receiver_name), None)
+        if not sender or not receiver:
+            return False
+        return sender.is_within_radius(receiver)
