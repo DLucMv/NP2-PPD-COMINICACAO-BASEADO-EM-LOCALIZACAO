@@ -89,13 +89,16 @@ def start_user_interface():
                     print("Mensagem enviada via fila (usuário offline ou fora de cobertura).")
 
             elif op == "6":
-                msgs = mom.read_buffer()
-                if not msgs:
-                    print("Nenhuma mensagem offline.")
+                if user.status == "online":
+                    msgs = mom.read_buffer()
+                    if not msgs:
+                        print("Nenhuma mensagem offline.")
+                    else:
+                        print("Mensagens offline:")
+                        for m in msgs:
+                            print(" -", m)
                 else:
-                    print("Mensagens offline:")
-                    for m in msgs:
-                        print(" -", m)
+                    print("sem conexão")
             elif op == "0":
                 try:
                     registry.update_status(user_id, "offline")

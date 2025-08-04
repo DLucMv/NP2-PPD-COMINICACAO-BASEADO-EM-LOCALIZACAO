@@ -14,7 +14,7 @@ class MOMManager(stomp.ConnectionListener):
         print(f"[MOM] Subscrito na fila: {self.queue_name}")
 
     def send_message(self, target_user, message):
-        destination = f"/queue/user.{target_user}"
+        destination = f"/queue/{target_user}"
         body = f"Mensagem offline de {self.user_name}: {message}"
         self.conn.send(destination=destination, body=body)
         print(f"[MOM] Mensagem enviada para {destination}")
